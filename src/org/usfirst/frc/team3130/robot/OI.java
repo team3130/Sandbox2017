@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3130.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 
 import org.usfirst.frc.team3130.robot.commands.ExampleCommand;
 
@@ -36,4 +38,73 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
+	
+		@SuppressWarnings("unused")
+		private class JoystickTrigger extends Trigger{
+
+			private Joystick stick;
+			private int axis;
+			private double threshold;
+			
+			private JoystickTrigger(Joystick stick, int axis){
+				this.stick = stick;
+				this.axis = axis;
+				threshold = 0.1;
+			}
+			
+			private JoystickTrigger(Joystick stick, int axis, double threshold){
+				this.stick = stick;
+				this.axis = axis;
+				this.threshold = threshold;
+			}
+			
+			@Override
+			public boolean get() {
+				return stick.getRawAxis(axis) > threshold;
+			}
+			
+		}
+		
+		private class POVTrigger extends Trigger{
+
+			private Joystick stick;
+			private int POV;
+			
+			public POVTrigger(Joystick stick, int POV) {
+				this.stick = stick;
+				this.POV = POV;
+			}
+			
+			@Override
+			public boolean get() {
+				return stick.getPOV(0)==POV;
+			}
+			
+		}
+		
+		//Instance Handling
+	    private static OI m_pInstance;
+	    public static OI GetInstance()
+	    {
+	    	if(m_pInstance == null) m_pInstance = new OI();
+	    	return m_pInstance;
+	    }
+	
+	    //Define Joysticks
+		public static Joystick stickL;
+		public static Joystick stickR;
+		public static Joystick gamepad;
+	    
+	    //create and instantiate buttons here
+	    
+	    private OI() {
+	    	
+	    	//Create Joysticks
+			stickL = new Joystick(0);
+			stickR = new Joystick(1);
+			gamepad = new Joystick(2);
+	    	
+	    	//assign buttons created above to robotMap values
+	    	
+	    }
 }
